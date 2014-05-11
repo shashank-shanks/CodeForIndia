@@ -49,7 +49,7 @@
     [button addTarget:self action:@selector(scanToken:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
-    self.navigationController.navigationItem.rightBarButtonItem = barButtonItem;
+    self.navigationItem.rightBarButtonItem  = barButtonItem;
     
     self.title = @"Register User";
     // Do any additional setup after loading the view from its nib.
@@ -58,7 +58,7 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    contentSize = self.scrollView.contentSize;
+    contentSize = CGSizeMake(1024, 768);
     contentOffset = self.scrollView.contentOffset;
 }
 
@@ -75,7 +75,7 @@
     frame.size.height =768-352;
    
     self.scrollView.frame = frame;
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width,416) ;
+    self.scrollView.contentSize = CGSizeMake(1024,600) ;
     if (textField.tag>1004)
     {
         [self.scrollView setContentOffset:CGPointMake(0,self.scrollView.contentSize.height -self.scrollView.frame.size.height) animated:YES];
@@ -102,7 +102,7 @@
 {
     SCViewController* scanViewController = [[SCViewController alloc] initWithNibName:@"CFIScanViewController" bundle:nil];
     scanViewController.hasUserRegistered = NO;
-    
+    scanViewController.userDataDictionary = (NSMutableDictionary *)[sender mutableCopy] ;
     [self.navigationController pushViewController:scanViewController animated:YES];
 }
 
@@ -113,4 +113,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)AutoFill:(id)sender
+{
+  NSDictionary *params=  @{@"name": @"Shashank",
+      @"Age ":  @"23",
+      @"Gender": @"Male",
+      @"Address": @"Bangalore, Karnataka",
+      @"Contact": @"9876543210",
+      @"EmergencyName":@"Shanks",
+      @"EmergencyNumber":@"1234567890"};
+    
+    [self scanToken:params];
+    
+}
 @end

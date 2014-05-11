@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CFIRegisterUserViewController : UIViewController<UITextFieldDelegate>
+- (IBAction)AutoFill:(id)sender;
 
 @end
