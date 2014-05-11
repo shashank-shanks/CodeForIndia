@@ -54,6 +54,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    //[self.mapTableView registerClass:[CFIStatsTableViewCell class] forCellReuseIdentifier:@"statsCell"];
+    
     [self updateBoothInfoView];
     [self addMapView];
    
@@ -181,24 +183,24 @@
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.neighbourBoothsArray.count;
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CFIBooth *booth = self.neighbourBoothsArray[indexPath.row];
+    CFICurrentBooth *booth = [CFIShareRegionInfo sharedInstance].currentBooth;
     
     CFIStatsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"statsCell"];
     
     if (!cell)
     {
-        cell = [[CFIStatsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"statsCell"];
+        cell = [[[NSBundle mainBundle]loadNibNamed:@"CFIStatsTableViewCell" owner:self options:nil]objectAtIndex:0];
     }
     
     cell.nameLabel.text = booth.name;
     
     cell.coordinateLabel.text = [NSString stringWithFormat:@"lat: %@ , long: %@",booth.latitude , booth.longitude];
-    cell.statsLabel.text = [NSString stringWithFormat:@"%@",booth.travellerDensity];
+    cell.statsLabel.text = [NSString stringWithFormat:@"%@",@"158"];
     return cell;
     
 }
