@@ -7,6 +7,10 @@
 //
 
 #import "CFISignInViewController.h"
+#import "CFIRegion.h"
+#import "CFIBooth.h"
+#import "CFICurrentBooth.h"
+#import "CFIShareRegionInfo.h"
 
 @interface CFISignInViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
@@ -65,6 +69,43 @@
 }
 
 - (IBAction)signIN:(id)sender {
+    [self setupData];
     [self loginWithUsername:self.usernameField.text withPassword:self.passwordField.text];
 }
+
+- (void)setupData
+{
+    CFIRegion *region = [[CFIRegion alloc]init];
+    region.name = @"Kedarnath region";
+    
+    NSMutableArray *array = [[NSMutableArray alloc]initWithCapacity:3];
+    
+    CFICurrentBooth *booth = [[CFICurrentBooth alloc]init];
+    booth.name = @"Kedarnath";
+    booth.latitude = @30.73;
+    booth.longitude = @79.07;
+    booth.ID = @"1";
+    [array addObject:booth];
+    
+    CFICurrentBooth *booth1= [[CFICurrentBooth alloc]init];
+    booth1.name = @"Badrinath";
+    booth1.latitude = @30.74;
+    booth1.longitude = @79.49;
+    booth.ID = @"2";
+    [array addObject:booth1];
+    
+    CFICurrentBooth *booth2 = [[CFICurrentBooth alloc]init];
+    booth2.name = @"JoshiMath";
+    booth2.latitude = @30.57;
+    booth2.longitude = @79.57;
+    booth.ID = @"3";
+    [array addObject:booth2];
+    
+    region.booths = array;
+    
+    [[CFIShareRegionInfo sharedInstance]setCurrentRegion:region];
+    [[CFIShareRegionInfo sharedInstance]setCurrentBooth:booth1];
+    
+}
+
 @end

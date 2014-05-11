@@ -11,6 +11,8 @@
 #import "CFIShareRegionInfo.h"
 #import "CFIStatsTableViewCell.h"
 #import "RMPieChart.h"
+#import "CFIShareRegionInfo.h"
+#import "CFICurrentBooth.h"
 
 
 @interface CFIStatsViewController ()<RMPieChartDelegate,RMPieChartDataSource>
@@ -86,16 +88,18 @@
 
 - (void)addMapView
 {
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:12.96
-                                                            longitude:77.56
-                                                                 zoom:6];
+    CFICurrentBooth *booth = [[CFIShareRegionInfo sharedInstance] currentBooth];
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:[booth.latitude floatValue]
+                                                            longitude:[booth.longitude floatValue]
+                                                                 zoom:10];
     self.mapView = [GMSMapView mapWithFrame:self.mapContainerView.bounds camera:camera];
     self.mapView.myLocationEnabled = YES;
     self.mapView.settings.myLocationButton = YES;
     [self.mapContainerView addSubview:self.mapView];
     
-    [self addMarkerAtLatitude:12.96 Longitude:77.56 title:@"Bangalore" snippet:@"Karnataka"];
-    [self addCircleAtLatitude:12.96 Longitude:77.56 circleColor:[UIColor colorWithRed:65./255. green:91./255. blue:105./255. alpha:1.0f] fillColor:[UIColor colorWithRed:65./255. green:91./255. blue:105./255. alpha:0.6f] circleWidth:2 radius:50000 animate:YES];
+    [self addMarkerAtLatitude:[booth.latitude floatValue] Longitude:[booth.longitude floatValue] title:booth.name snippet:booth.name];
+    [self addCircleAtLatitude:[booth.latitude floatValue] Longitude:[booth.longitude floatValue] circleColor:[UIColor colorWithRed:65./255. green:91./255. blue:105./255. alpha:1.0f] fillColor:[UIColor colorWithRed:65./255. green:91./255. blue:105./255. alpha:0.6f] circleWidth:2 radius:5000 animate:YES];
 }
 
 - (void)addMarkerAtLatitude:(CGFloat)latitude Longitude:(CGFloat)longitude title:(NSString *) title snippet:(NSString *)snippet
@@ -141,10 +145,15 @@
     self.mview.backgroundColor = [UIColor colorWithHue:270/360.0 saturation:1 brightness:1 alpha:1];
     self.cview.backgroundColor = [UIColor colorWithHue:360/360.0 saturation:1 brightness:1 alpha:1];
     
-    [self.pieChartData addObject:@(90)];
-    [self.pieChartData addObject:@(90)];
-    [self.pieChartData addObject:@(90)];
-    [self.pieChartData addObject:@(90)];
+    self.SRLabel.text = [self.SRLabel.text stringByAppendingString:@" 135%"];
+    self.wLabel.text = [self.wLabel.text stringByAppendingString:@" 50%"];
+    self.mLabel.text = [self.mLabel.text stringByAppendingString:@" 130%"];
+    self.cLabel.text = [self.cLabel.text stringByAppendingString:@" 45%"];
+    
+    [self.pieChartData addObject:@(135)];
+    [self.pieChartData addObject:@(50)];
+    [self.pieChartData addObject:@(130)];
+    [self.pieChartData addObject:@(45)];
     
     [self.pieChart reloadChart];
 }
