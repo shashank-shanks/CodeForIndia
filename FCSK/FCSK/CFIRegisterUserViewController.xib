@@ -167,6 +167,17 @@
                                 <outlet property="delegate" destination="-1" id="i8q-Zt-WCe"/>
                             </connections>
                         </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fWK-ST-Aiu">
+                            <rect key="frame" x="855" y="247" width="149" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Auto Fill And Proceed">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="AutoFill:" destination="-1" eventType="touchUpInside" id="5CB-et-5Gu"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                 </scrollView>

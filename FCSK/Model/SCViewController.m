@@ -20,7 +20,8 @@
 #import "SCShapeView.h"
 #import "KSXMLParser.h"
 #import "UIAlertView+Blocks.h"
-
+#import "CFIShareRegionInfo.h"
+#import "CFIBooth.h"
 
 @interface SCViewController () <AVCaptureMetadataOutputObjectsDelegate> {
     AVCaptureVideoPreviewLayer *_previewLayer;
@@ -31,6 +32,8 @@
 }
 @property (strong,nonatomic)AVAudioPlayer* audioPlayer;
 @property (strong, nonatomic) AVCaptureSession *captureSession;
+@property (strong, nonatomic) NSArray *booths;
+@property (strong, nonatomic) NSString *ticketID;
 
 @end
 
@@ -148,7 +151,7 @@
             [xmlParser parseXML:xmlString];
             
             NSLog(@"%@",xmlString);
-            self.userDataDictionary = [[NSMutableDictionary alloc]initWithDictionary:xmlParser.userDataDictionary];
+            //self.userDataDictionary = [[NSMutableDictionary alloc]initWithDictionary:xmlParser.userDataDictionary];
             
             NSString* soundPath = [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"mp3"];
             NSURL *soundPathUrl = [NSURL URLWithString:soundPath];
@@ -163,7 +166,8 @@
             
            // NSLog(@"%@",xmlParser.userDataDictionary);
             
-            UIAlertView *alertView= [[UIAlertView alloc] initWithTitle:@"Confirm Details" message:[NSString stringWithFormat:@"Name : %@ \n Token # : %@",self.userDataDictionary[@"name"],self.userDataDictionary[@"uid"]]
+            self.ticketID = @"79ad33f7-d897-11e3-8855-406c8f476194";
+            UIAlertView *alertView= [[UIAlertView alloc] initWithTitle:@"Confirm Details" message:[NSString stringWithFormat:@"Name : Shashank Kancherla \n Ticket # : 79ad33f7-d897-11e3-8855-406c8f476194"]
             cancelTitle:@"Try Again" cancelBlock:^(NSArray *collectedStrings)
             {
                 [self startCapturing];
@@ -255,7 +259,8 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"neighbourBooths"] count];
+    self.booths = [NSArray arrayWithArray: [CFIShareRegionInfo sharedInstance].currentRegion.booths];
+    return [CFIShareRegionInfo sharedInstance].currentRegion.booths.count;
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -266,25 +271,25 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"boothCell"];
         
     }
+   
+    CFIBooth *booth = self.booths[indexPath.row];
     
-    NSDictionary *dict = [[[NSUserDefaults standardUserDefaults] objectForKey:@"neighbourBooths"] objectAtIndex:indexPath.row];
-    
-    cell.textLabel.text = dict[@"name"];
-    cell.detailTextLabel.text = dict[@"id"];
+    cell.textLabel.text = booth.name;
+    cell.detailTextLabel.text = booth.ID;
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.hasUserRegistered)
-    {
-        // call Update API
-    }
-    else
-    {
-        // call SignUP API
-    }
+    NSDictionary *params=  @{@"Name": @"Shashank",
+                             @"Age ":  @"23",
+                             @"Gender": @"Male",
+                             @"Address": @"Bangalore, Karnataka",
+                             @"Contact": @"9876543210",
+                             @"EmergencyName":@"Shanks",
+                             @"EmergencyNumber":@"1234567890",
+                             @"Ticket":self.ticketID};
     
     
     // send API To server indicating the next booth
